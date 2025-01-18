@@ -6,11 +6,14 @@ def main(page: ft.Page):  # Recebe 'page' como argumento
     # Título inicial
     titulo = ft.Text("Chatzap", size=30, weight="bold")
     
-    def enviar_mensagem_tunel2(mensagem)
-    # Todos os usuarios iram receber a mensagem
+    # Função para enviar mensagens a todos os usuários
+    def enviar_mensagem_tunel2(mensagem):
         texto_mensagem = ft.Text(mensagem)
         chat.controls.append(texto_mensagem)
         page.update()
+
+    # Inscreve-se para receber mensagens publicadas
+    page.pubsub.subscribe(enviar_mensagem_tunel2)
     
     # Container para o chat
     chat = ft.Column()
@@ -22,9 +25,11 @@ def main(page: ft.Page):  # Recebe 'page' como argumento
     def enviar_mensagem_tunel(evento):
         nome_usuario = caixa_nome.value
         texto_campo_mensagem = campo_enviar_mensagem.value
-        texto = ft.Text(f"{nome_usuario}: {texto_campo_mensagem}")
-        chat.controls.append(texto)
-
+        mensagem = f"{nome_usuario}: {texto_campo_mensagem}"
+        
+        # Enviar a mensagem para todos os inscritos (todos os usuários)
+        page.pubsub.send_all(mensagem)
+        
         # Se um arquivo for selecionado, enviar o nome do arquivo
         if file_picker.files:
             for arquivo in file_picker.files:
@@ -70,11 +75,19 @@ def main(page: ft.Page):  # Recebe 'page' como argumento
     # Botão inicial
     botao = ft.ElevatedButton("Iniciar Chat", on_click=abrir_modal)
     
-    # Adicionando o file picker
+    # Adicionando o file picker dentro do chat
     def on_file_selected(evento):
         print("Arquivo selecionado:", evento.files)
+        # Exibindo o nome do arquivo selecionado no chat
+        nome_usuario = caixa_nome.value
+        for arquivo in evento.files:
+            chat.controls.append(ft.Text(f"{nome_usuario} enviou o arquivo: {arquivo.name}"))
+        page.update()
     
+    # FilePicker
     file_picker = ft.FilePicker(on_result=on_file_selected)
+    
+    # Botão para abrir o file picker
     botao_selecionar_arquivo = ft.ElevatedButton("Selecionar Arquivo", on_click=lambda e: file_picker.pick_files())
     
     # Colocar os elementos iniciais na página
