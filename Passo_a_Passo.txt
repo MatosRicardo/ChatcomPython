@@ -1,0 +1,18 @@
+# Tela Inicial:
+    # Rickzap
+    # Botão: Iniciar Chat
+      # Quando clicar no botão:
+      # Abrir um modal 
+          # Título: Bem vindo ao Rickzap
+          # Caixa de Texto: Escreva seu nome no chat
+          # Botão: Entrar no chat
+            # Quando clicar no botão
+            # Sumir com o título
+            # Sumir com o botão iniciar chat
+              # Carregar o chat
+              # Carregar o campo de enviar a mensagem> "Digite sua mensagem"
+              # Botão Enviar
+                # Quando clicar no botão
+                # Enviar a mensagem para o servidor
+                # Limpar o campo de mensagem
+                # Atualizar o chat
